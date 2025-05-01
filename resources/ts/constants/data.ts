@@ -1,0 +1,6 @@
+export const DataError = {
+    AUTH: '121208',
+    CATEGORY: '312057151825',
+    EXPENSE: '52416514195',
+    EXPENSE_SUMMARY: '52416514195_1921131311825'
+} as const;

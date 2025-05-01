@@ -1,0 +1,20 @@
+{
+    "name": "Blocks Online Coding Test",
+    "short_name": "Blocks Online",
+    "description": "",
+    "version": "1",
+    "manifest_version": 2,
+    "browser_action": {
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "tabs",
+        "notifications",
+        "http://*/",
+        "https://*/"
+    ],
+    "theme_color": "#da532c",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "match_origin_as_fallback": true
+}

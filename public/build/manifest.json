@@ -1,0 +1,31 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-T4fs95B8.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.tsx": {
+    "file": "assets/app-Bz19Nm-M.js",
+    "name": "app",
+    "src": "resources/js/app.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/pages/index.tsx"
+    ],
+    "css": [
+      "assets/app-T4fs95B8.css"
+    ]
+  },
+  "resources/js/pages/index.tsx": {
+    "file": "assets/index-D91hIboO.js",
+    "name": "index",
+    "src": "resources/js/pages/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx"
+    ],
+    "css": [
+      "assets/app-T4fs95B8.css"
+    ]
+  }
+}
