@@ -78,4 +78,12 @@ class UserService implements UserServiceInterface
     {
         return $this->repository->exists($userId);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function findByUsername(string $username): ?User
+    {
+        return User::query()->where('username', '=', $username)->first();
+    }
 }

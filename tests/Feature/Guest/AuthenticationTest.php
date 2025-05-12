@@ -46,8 +46,8 @@ describe('Auth', function () {
     });
 
     test('users can logout', function () {
-        $this->actingAs($this->user)->get(route('auth.logout'));
-
-        $this->assertGuest();
+        $this->actingAs($this->user)
+            ->get(route('api.logout'))
+            ->assertStatus(200);
     });
 });

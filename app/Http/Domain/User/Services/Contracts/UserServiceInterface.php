@@ -56,6 +56,15 @@ interface UserServiceInterface
     public function find(int $id): ?User;
 
     /**
+     * Get a single User resource by username.
+     *
+     * @param string $username
+     *
+     * @return \App\Http\Domain\User\Models\User|null
+     */
+    public function findByUsername(string $username): ?User;
+
+    /**
      * Delete a User resource by unique key.
      *
      * @param int $id

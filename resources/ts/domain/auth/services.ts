@@ -30,7 +30,7 @@ export const authService: AuthService = {
         const asyncRes: Result<Api<AuthResource>, DomainError> = await ResultAsync.fromPromise(
             axios.
                 post(
-                    serviceHelper.getPath('auth.login'),
+                    serviceHelper.getPath('auth.token'),
                     credentials,
                     { signal }
                 ).

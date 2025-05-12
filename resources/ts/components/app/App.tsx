@@ -104,7 +104,7 @@ declare module '@tanstack/react-router' {
  */
 
 const networkService: NetworkService = new NetworkService();
-networkService.setUp();
+networkService.setUp(queryClient);
 
 /**
  * App is the main application component.

@@ -10,8 +10,9 @@ export const HttpHeaders: Config = {
 export const endpoints: Paths = {
     auth: {
         login: 'auth/login',
-        logout: 'auth/logout',
-        csrfCookie: 'sanctum/csrf-cookie'
+        token: '/api/sanctum/token',
+        logout: '/api/auth/logout',
+        csrfCookie: '/api/sanctum/csrf-cookie'
     },
     authenticated: {
         category: {

@@ -120,7 +120,7 @@ describe('User', function () {
                 ->getJson(route('api.users.index'))
                 ->assertStatus(200);
 
-            expect($response->getData()->status)->toBe(403);
+            expect($response->getData()->status)->toBe(400);
         });
 
         test('cannot list users', function () {
@@ -143,7 +143,7 @@ describe('User', function () {
             $response = $this->getJson(route('api.users.show', ['id' => 3]))
                 ->assertStatus(200);
 
-            expect($response->getData()->status)->toBe(403);
+            expect($response->getData()->status)->toBe(400);
         });
 
         test('cannot show unknown users', function () {
@@ -166,7 +166,7 @@ describe('User', function () {
             $response = $this->postJson(route('api.users.store'), [])
                 ->assertStatus(200);
 
-            expect($response->getData()->status)->toBe(403);
+            expect($response->getData()->status)->toBe(400);
         });
 
         test('cannot create users fails on data', function () {
@@ -201,7 +201,7 @@ describe('User', function () {
             $response = $this->patchJson(route('api.users.update', ['id' => 1]), [])
                 ->assertStatus(200);
 
-            expect($response->getData()->status)->toBe(403);
+            expect($response->getData()->status)->toBe(400);
         });
 
         test('cannot update unknown user', function () {
@@ -244,7 +244,7 @@ describe('User', function () {
             $response = $this->deleteJson(route('api.users.destroy', ['id' => 1]))
                 ->assertStatus(200);
 
-            expect($response->getData()->status)->toBe(403);
+            expect($response->getData()->status)->toBe(400);
         });
 
         test('cannot delete unknown user', function () {

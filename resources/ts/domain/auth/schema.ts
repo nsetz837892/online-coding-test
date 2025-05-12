@@ -8,5 +8,6 @@ export const AuthResource = z.object({
     id: z.number(),
     name: z.string(),
     email: z.string(),
-    role: z.object(Role.shape)
+    role: z.object(Role.shape),
+    token: z.string()
 });

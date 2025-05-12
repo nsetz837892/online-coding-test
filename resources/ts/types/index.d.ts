@@ -187,6 +187,7 @@ export type AuthResource = {
     name: string;
     email: string;
     role: Role;
+    token: string;
 };
 
 export type AuthContext = {

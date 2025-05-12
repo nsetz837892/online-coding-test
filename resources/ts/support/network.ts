@@ -1,6 +1,9 @@
 import { ResponseStatus } from '@/constants/http';
 import { paths } from '@/constants/paths';
 import { HttpHeaders } from '@/domain/constants';
+import getAuthQueryKey from '@/state/query-keys/auth/keys';
+import { AuthContext } from '@/types';
+import { QueryClient } from '@tanstack/react-query';
 import axios, { AxiosHeaderValue, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 /**
@@ -8,9 +11,9 @@ import axios, { AxiosHeaderValue, AxiosResponse, InternalAxiosRequestConfig } fr
  * and registers interceptors.
  */
 export class NetworkService {
-    public setUp = (): void => {
+    public setUp = (queryClient: QueryClient): void => {
         this.setDefaults();
-        this.setupInterceptors();
+        this.setupInterceptors(queryClient);
     };
 
     public setDefaults = (): void => {
@@ -30,9 +33,19 @@ export class NetworkService {
         axios.defaults.headers.common['Expires'] = '0';
     };
 
-    public setupInterceptors = (): void => {
+    public setupInterceptors = (queryClient: QueryClient): void => {
         axios.interceptors.request.use(
             (axReqConfig: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+                const authContext: AuthContext | undefined = queryClient.getQueryData(getAuthQueryKey());
+
+                if (!authContext || !authContext.resource) {
+                    throw new Error('Auth context not found.');
+                }
+
+                if (authContext.resource.token) {
+                    axReqConfig.headers.Authorization = `Bearer ${authContext.resource.token}`;
+                }
+
                 /*
                  * Add a timestamp to the request if the request is not for auth.
                  */

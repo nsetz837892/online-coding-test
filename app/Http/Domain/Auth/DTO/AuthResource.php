@@ -25,9 +25,15 @@ class AuthResource implements Arrayable, ToObject
      * @param string  $name
      * @param string  $email
      * @param RoleDTO $role
+     * @param string  $token
      */
-    public function __construct(public int $id, public string $name, public string $email, public RoleDTO $role)
-    {
+    public function __construct(
+        public int     $id,
+        public string  $name,
+        public string  $email,
+        public RoleDTO $role,
+        public string  $token
+    ) {
     }
 
     /**
@@ -40,7 +46,17 @@ class AuthResource implements Arrayable, ToObject
      */
     public static function fromUser(User|Authenticatable $user): AuthResource
     {
-        return new self($user->getKey(), $user->username(), $user->email(), $user->getRoleResource());
+        return new self(
+            $user->getKey(),
+            $user->username(),
+            $user->email(),
+            $user->getRoleResource(),
+            $user->createToken(
+                $user->getAttribute('name') . '-AuthToken',
+                ['*'],
+                now()->addMinutes(30)
+            )->plainTextToken
+        );
     }
 
     /**
@@ -54,6 +70,7 @@ class AuthResource implements Arrayable, ToObject
             'name'  => $this->name,
             'email' => $this->email,
             'role'  => $this->role->toArray(),
+            'token' => $this->token,
         ];
     }
 

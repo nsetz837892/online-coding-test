@@ -3,9 +3,12 @@ declare(strict_types = 1);
 
 namespace App\Http\Domain\Auth\Requests;
 
+use App\Http\Domain\User\Models\User;
+use App\Http\Domain\User\Services\Contracts\UserServiceInterface;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -15,6 +18,14 @@ use Illuminate\Validation\ValidationException;
  */
 class LoginRequest extends FormRequest
 {
+    /**
+     * @param \App\Http\Domain\User\Services\Contracts\UserServiceInterface $service
+     */
+    public function __construct(protected readonly UserServiceInterface $service)
+    {
+        parent::__construct();
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -54,6 +65,31 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
+    }
+
+    /**
+     * Attempt to authenticate the request's credentials
+     * with a token.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function authenticateToken(): User
+    {
+        $this->ensureIsNotRateLimited();
+
+        $user = $this->service->findByUsername($this->username);
+
+        if (!$user || !Hash::check($this->password, $user->password)) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                                                        'username' => __('auth.failed'),
+                                                    ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
+
+        return $user;
     }
 
     /**

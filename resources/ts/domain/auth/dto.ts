@@ -9,5 +9,6 @@ export const AuthDto = {
         id: 0,
         name: 'Guest Role',
         permissions: []
-    }
+    },
+    token: '---'
 };
