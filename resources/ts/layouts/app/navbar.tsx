@@ -35,7 +35,7 @@ type DrawItemsMemoizedProps = {
     /*
      * A listing of available routes.
      */
-    routes: RouteGroup[];
+    routes: Map<string, RouteGroup>;
 };
 
 /**
@@ -185,7 +185,7 @@ const Navbar: NavbarFC = memo((): React.ReactNode => {
                 onClose={handleClose}
             >
                 <DrawHeaderMemoized />
-                <DrawItemsMemoized routes={Array.from(routes.values())}
+                <DrawItemsMemoized routes={routes}
                     onClose={handleClose}
                 />
             </Drawer>

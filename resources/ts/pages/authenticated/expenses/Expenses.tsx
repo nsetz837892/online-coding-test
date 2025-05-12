@@ -134,7 +134,7 @@ const Expenses: ExpensesFC = memo((): React.ReactNode => {
                 ));
             }
         },
-        [authContext.resource.id, data, isPlaceholderData, page, category, queryClient]
+        [authContext, data, isPlaceholderData, page, category, queryClient]
     );
 
     return (
