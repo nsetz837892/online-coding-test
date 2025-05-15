@@ -2,6 +2,7 @@ import { Button, ButtonElement } from '@/components/ui/flowbite/button';
 import { DateTime } from '@/constants/date-time';
 import { expenseService } from '@/domain/expense';
 import { useRefs } from '@/hooks/use-refs';
+import EventBus from '@/support/event-bus';
 import { ApiPaginated, Deleted, DomainError, Expense, Meta } from '@/types';
 import dayjs from 'dayjs';
 import { Pagination, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from 'flowbite-react';
@@ -124,15 +125,13 @@ const ListingContainer: ListingContainerFC = memo(({ children, meta, onChangePag
     );
 });
 
+export const eventBus = new EventBus<{ page: number }>();
+
 export type ListingProps = {
     /*
      * Paginated listing of expense entity.
      */
     data: ApiPaginated<Expense>;
-    /*
-     * Event handler to the paginator
-     */
-    onChangePage?: (page: number) => void;
     /*
      * Event handler to a delete action
      */
@@ -148,10 +147,17 @@ type ListingFC = React.FC<ListingProps> & {
  *
  * @constructor
  */
-const Listing: ListingFC = ({ data, onChangePage, onDelete }: ListingProps): React.ReactNode => {
+const Listing: ListingFC = ({ data, onDelete }: ListingProps): React.ReactNode => {
     const abortControllerRef: React.RefObject<AbortController | null> = React.useRef(null);
 
     const { refsByKey, setRef } = useRefs<ButtonElement>();
+
+    const changePage = (page: number) => {
+        eventBus.emit(
+            'changePage',
+            { page }
+        );
+    };
 
     /**
      * handleDelete proxies the delete action event.
@@ -197,7 +203,7 @@ const Listing: ListingFC = ({ data, onChangePage, onDelete }: ListingProps): Rea
 
     return (
         <Listing.Container meta={data.meta}
-            onChangePage={onChangePage}
+            onChangePage={changePage}
         >
             <TableBody className="divide-y">
                 {Array.isArray(data?.data) && data.data.length === 0 && <NoContent />}

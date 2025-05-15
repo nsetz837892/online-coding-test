@@ -31,10 +31,13 @@ export const Route = createFileRoute('/_authenticated' as never)({
         const authContext: AuthContext | undefined = queryClient.getQueryData(authQueryKey);
 
         if (!authContext) {
-            queryClient.setQueryData(authQueryKey, {
-                authenticated: false,
-                resource: { ...AuthDto },
-            });
+            queryClient.setQueryData(
+                authQueryKey,
+                {
+                    authenticated: false,
+                    resource: { ...AuthDto }
+                }
+            );
         }
 
         /*
@@ -47,14 +50,14 @@ export const Route = createFileRoute('/_authenticated' as never)({
             throw redirect({
                 to: paths.guest.login,
                 search: {
-                    redirect: location.href,
-                },
+                    redirect: location.href
+                }
             });
         }
     },
     shouldReload: true,
     component: Layout,
     staticData: {
-        title: 'Authenticated',
-    },
+        title: 'Authenticated'
+    }
 });

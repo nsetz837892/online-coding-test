@@ -107,7 +107,6 @@ const AddExpense: AddExpenseFC = (): React.ReactNode => {
             setIsPending(true);
             setError('');
 
-            console.log(value);
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
             }

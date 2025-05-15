@@ -11,6 +11,7 @@ import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Await, getRouteApi } from '@tanstack/react-router';
 import { Spinner } from 'flowbite-react';
 import React, { memo } from 'react';
+import { eventBus } from './Listing';
 
 /**
  * Manually accessing the Route API for the expense route.
@@ -57,9 +58,12 @@ const Expenses: ExpensesFC = memo((): React.ReactNode => {
      * handleChangePage is the event handler
      * to the Listing component onChangePage event.
      */
-    const handleChangePage = (page: number) => {
-        setPage(page);
-    };
+    const handleChangePage = React.useCallback(
+        (data: { page: number }) => {
+            setPage(data.page);
+        },
+        []
+    );
 
     /**
      * handleDelete is the event handler
@@ -137,6 +141,23 @@ const Expenses: ExpensesFC = memo((): React.ReactNode => {
         [authContext, data, isPlaceholderData, page, category, queryClient]
     );
 
+    React.useEffect(
+        () => {
+            eventBus.on(
+                'changePage',
+                handleChangePage
+            );
+
+            return () => {
+                eventBus.off(
+                    'changePage',
+                    handleChangePage
+                );
+            };
+        },
+        [handleChangePage]
+    );
+
     return (
         <Container>
             <h3 className="mb-4 text-2xl font-extrabold dark:text-blue-400">
@@ -177,7 +198,6 @@ const Expenses: ExpensesFC = memo((): React.ReactNode => {
                         <React.Fragment>
                             <Filters onFiltersSubmit={handleFiltersSubmit} />
                             <Listing data={data}
-                                onChangePage={handleChangePage}
                                 onDelete={handleDelete}
                             />
                         </React.Fragment>
